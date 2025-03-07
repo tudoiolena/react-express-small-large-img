@@ -1,8 +1,8 @@
 import './App.css';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 
 function App() {
-  const [date, setDate] = useState("2021-02-25T04:00:00+0000");
+  const date = "2021-02-25T04:00:00+0000";
   const [LAT, LON] = [36.525321, -121.815916];
   const FONT = "Raleway";
 
@@ -102,14 +102,27 @@ function App() {
     Celestial.skyview({ date: date });
   }, [date]);
 
-  const handleDateChange = () => {
-    setDate(Date.now());
-  };
 
+  const handleDownload = () => {
+    Celestial.exportSVG((svgString) => {
+      // Create a Blob from the SVG string
+      const blob = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
+      // Generate a URL for the Blob
+      const url = URL.createObjectURL(blob);
+      // Create an anchor and trigger the download
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "celestial.svg";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  }
 
   return (
     <div>
-    <button onClick={handleDateChange}>Change date</button>
+    <button onClick={handleDownload}>Download SVG</button>
       <div id="map-container">
         <div id="map"></div>
       </div>

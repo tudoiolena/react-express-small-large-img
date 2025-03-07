@@ -4,6 +4,7 @@ const { JSDOM } = jsdom;
 
 const app = express();
 const PORT = 3000;
+
 const [LAT, LON] = [36.525321, -121.815916];
 const date = "2021-02-25T04:00:00+0000";
 const FONT = "Raleway";
@@ -113,6 +114,7 @@ app.get('/download-svg', async (req, res) => {
 
             if (window.Celestial) {
                 window.Celestial.display(config);
+                window.Celestial.skyview({ date: date });
                 console.log('received config');
                 window.Celestial.exportSVG((svg) => {
                     console.log('sending svg');
