@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="public/lib/d3.js"></script>
+    <script type="text/javascript" src="public/lib/d3.geo.projection.js"></script>
+    <script type="text/javascript" src="public/celestial.js"></script>
+    <script data-main="public/celestial" src="public/require.js"></script>
+    <title>Download Celestial Map</title>
+</head>
+
+<body>
+    <h1>Celestial Map Generator</h1>
+    <a href="/download-svg" download="celestial.svg">
+        <button>Download SVG</button>
+    </a>
+    <script>
+        requirejs(["celestial"], () => {
+            window.onModulesLoaded()
+        });
+    </script>
+</body>
+
+</html>
