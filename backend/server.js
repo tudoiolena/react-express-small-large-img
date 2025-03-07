@@ -4,6 +4,9 @@ const { JSDOM } = jsdom;
 
 const app = express();
 const PORT = 3000;
+const [LAT, LON] = [36.525321, -121.815916];
+const date = "2021-02-25T04:00:00+0000";
+const FONT = "Raleway";
 
 app.get('/download-svg', async (req, res) => {
     try {
@@ -13,30 +16,94 @@ app.get('/download-svg', async (req, res) => {
         });
 
         const config = {
-            width: 400,
-            projection: "stereographic",
-            geopos: [51, 0],
-            orientationfixed: true,
-            follow: "center",
-            interactive: false,
-            center: [0, 0, 0],
-            advanced: false,
+            container: "map",
+            width: 700,
+
             form: false,
-            formFields: {},
-            location: true,
-            datapath: "public/data/",
-            planets: { show: true },
-            stars: {
-                show: true,
-                limit: 3.5,
-                colors: false,
-                style: { fill: "#000000", opacity: 1 },
-                designation: false,
-                propername: false,
+            advanced: false,
+            interactive: false,
+            disableAnimations: true,
+
+            zoomlevel: null,
+            zoomextend: 1,
+
+            projection: "airy",
+            // projection: "mercator", //for rectangle
+            transform: "equatorial",
+
+            follow: "zenith",
+            geopos: [LAT, LON],
+
+            lines: {
+                graticule: { show: false },
+                equatorial: { show: false },
+                ecliptic: { show: false },
+                galactic: { show: false },
+                supergalactic: { show: false }
             },
-            constellations: { names: false, lines: true },
-            dsos: { show: false },
-            mw: { show: true }
+            datapath: "https://ofrohn.github.io/data/",
+            planets: {
+                show: true,
+                which: ["mer", "ven", "ter", "lun", "mar", "jup", "sat"],
+
+                symbolType: "disk",
+                names: true,
+                nameStyle: {
+                    fill: "#00ccff",
+                    font: `14px ${FONT}`,
+                    align: "center",
+                    baseline: "top"
+                },
+                namesType: "en"
+            },
+
+            dsos: {
+                show: false,
+                names: false
+            },
+
+            constellations: {
+                names: true,
+                namesType: "iau",
+                nameStyle: {
+                    fill: "#ffffff",
+                    align: "center",
+                    baseline: "middle",
+                    font: [`14px ${FONT}`, `8px ${FONT}`, `0px ${FONT}`]
+                },
+                lines: true,
+                lineStyle: { stroke: "#cccccc", width: 1, opacity: 0.4 }
+            },
+
+            mw: {
+                show: true,
+                style: { fill: "#ffffff", opacity: 0.02 }
+            },
+
+            background: {
+                fill: "#0b1a26",
+                stroke: "#ffffff",
+                opacity: 1,
+                width: 2
+            },
+
+            stars: {
+                colors: true,
+                size: 4,
+                limit: 6,
+                exponent: -0.28,
+                designation: false,
+
+                propername: true,
+                propernameType: "name",
+                propernameStyle: {
+                    fill: "#ddddbb",
+                    font: `8px ${FONT}`,
+                    align: "right",
+                    baseline: "center"
+                },
+                propernameLimit: 2.0
+            }
         };
 
         const { window } = dom;
